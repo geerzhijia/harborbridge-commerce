@@ -1,0 +1,51 @@
+{
+  "ceo": {
+    "title": "CEO / coordinator",
+    "prompt": "agents/ceo.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "market": {
+    "title": "Market intelligence",
+    "prompt": "agents/market.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "sourcing": {
+    "title": "China sourcing and supplier diligence",
+    "prompt": "agents/sourcing.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "finance": {
+    "title": "Unit economics and pricing",
+    "prompt": "agents/finance.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "logistics": {
+    "title": "Logistics and inventory",
+    "prompt": "agents/logistics.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "amazon": {
+    "title": "Amazon operations",
+    "prompt": "agents/amazon.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  },
+  "compliance": {
+    "title": "Regulatory and business compliance",
+    "prompt": "agents/compliance.md",
+    "version": 1,
+    "model": null,
+    "provider": null
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "note": "Illustrative USD per-unit assumptions only; replace with current quotes. Duty must be calculated separately using verified customs basis.",
+  "currency": "USD",
+  "sale_price": 29.99,
+  "units": 300,
+  "fixed_launch_cost": 600,
+  "scenarios": {
+    "low": {
+      "product": 4.5,
+      "packaging": 0.5,
+      "inspection": 0.2,
+      "freight": 1.5,
+      "duty_tariffs": 0.8,
+      "broker_delivery": 0.6,
+      "referral_rate": 0.15,
+      "fba": 4.5,
+      "placement": 0.4,
+      "storage": 0.3,
+      "returns_reserve": 0.8,
+      "ads_rate": 0.12,
+      "other": 0.3
+    },
+    "base": {
+      "product": 5,
+      "packaging": 0.5,
+      "inspection": 0.2,
+      "freight": 2,
+      "duty_tariffs": 0.8,
+      "broker_delivery": 0.6,
+      "referral_rate": 0.15,
+      "fba": 4.5,
+      "placement": 0.4,
+      "storage": 0.3,
+      "returns_reserve": 0.8,
+      "ads_rate": 0.18,
+      "other": 0.3
+    },
+    "high": {
+      "product": 6,
+      "packaging": 0.5,
+      "inspection": 0.2,
+      "freight": 3,
+      "duty_tariffs": 0.8,
+      "broker_delivery": 0.6,
+      "referral_rate": 0.15,
+      "fba": 4.5,
+      "placement": 0.4,
+      "storage": 0.3,
+      "returns_reserve": 0.8,
+      "ads_rate": 0.25,
+      "other": 0.3
+    }
+  }
+}
