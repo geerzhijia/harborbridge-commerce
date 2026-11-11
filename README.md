@@ -1,5 +1,5 @@
 # HarborBridge Commerce — portable agent company starter
-Working name only; no availability checks or business registration have been performed. A human-owned China-to-Amazon commerce operation with a CEO and six specialist roles. This is a runnable local workflow and prompt library, not connected autonomous workers. No model, social platform, supplier, carrier or Amazon account is connected.
+Working name only; no availability checks or business registration have been performed. A human-owned China-to-Amazon commerce operation with a CEO and six specialist roles. Includes a cloud LLM task runner for every role. Configure API access using docs/cloud-setup.md; no local model is required. Social platforms, suppliers, carriers and Amazon tools are not connected.
 
 Requires Python 3.10+ and Git; no third-party packages.
 
@@ -21,3 +21,5 @@ Use the context output as the starting prompt in any model or platform, perform 
 Read docs/operating-playbook.md for the workflow, docs/migration.md to move platforms, docs/company-names.md for names, and docs/onboarding.md for missing business facts. The calculator uses illustrative inputs, not live fees, supplier quotes or tax advice. Source and verify actual inputs before an approval decision. No automatic monitoring or scheduling is enabled.
 
 Do not store passwords, identity documents, bank information or raw customer data here. Put secrets in the destination platform's secret manager. Operational records are retained in state/ and reports/; keep private backups and a lawful retention/deletion policy. Git history is not a substitute for a backup.
+
+Cloud execution: follow docs/cloud-setup.md, approve a task, then run `python3 tools/cloud.py TASK_ID`. Each invocation makes one hosted LLM request and saves a draft for owner review.
