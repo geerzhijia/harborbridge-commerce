@@ -1,28 +1,39 @@
 # Run every role with a cloud LLM
-No local model or GPU is needed. All seven roles use a hosted API; a role is a separate prompt and saved state, so you do not need seven simultaneous model servers. The runner makes one paid request for a selected approved task, saves its result, then stops. It is not an always-on background service. Run one process at a time with this single-owner ledger.
+No local model or GPU is needed. All seven roles use a hosted API; a role is a separate prompt and saved state, so you do not need seven simultaneous model servers. The runner makes one API request for a selected approved task, saves its result, then stops. It is not an always-on background service. Run one process at a time with this single-owner ledger.
 
-The default endpoint is OpenAI's Chat Completions API. Configure a model available to your API account. A ChatGPT subscription does not supply API credentials or API billing credits. Never send keys in chat, commit them or put them in task descriptions. Set environment variables via your shell or secret manager; `.env` files are not automatically loaded.
+## Gemini free-tier test (current default)
+All roles currently use native Gemini generateContent with `gemini-3.5-flash-lite`, 2,000 maximum output tokens and no browsing/tool calls. Google currently lists this model with free-tier input/output. Confirm availability, project tier and quotas in Google AI Studio: https://aistudio.google.com/api-keys . Use a project on the **Free** tier for this test. Setting a model ID or a `free` label in this repository cannot prevent charges on a paid project. No automatic fallback to another model/provider is configured.
 
-```sh
-# In your terminal, supply your key without displaying it:
-read -rs -p 'Cloud API key: ' LLM_API_KEY; echo
-export LLM_API_KEY
-export LLM_MODEL='your-provider-model-id'
-python3 tools/company.py task market 'Draft a research plan for three product niches; identify required current data'
-# Owner runs approval, using the returned task ID:
-python3 tools/company.py approve TASK_ID --by owner
-python3 tools/cloud.py TASK_ID
-# Read the saved report; owner accepts it when satisfied:
-python3 tools/company.py review TASK_ID --by owner
+```bash
+cd /workspace/source/harborbridge-commerce
+read -rs -p 'Gemini API key: ' GEMINI_API_KEY; echo
+export GEMINI_API_KEY
+python3 tools/cloud.py --check-config ceo
+# Owner approves the existing CEO task; then run it:
+python3 tools/company.py approve task-7f57b1072fa6 --by owner
+python3 tools/cloud.py task-7f57b1072fa6
 ```
 
-All roles inherit cloud.json defaults. Override any role under `roles`, for example:
+The API key belongs to your Google project. Never paste it into chat or commit it. Environment variables last for the current terminal session; use a secret manager for persistence. `.env` files are not automatically loaded. `--check-config` checks local settings and key presence only, with no network call. If quota is exhausted, the run fails and waits; it does not switch to a paid model. If a run fails, inspect its status before retrying; do not approve an already approved task again.
+
+Free-tier content may be used to improve Google's products. Use nonsensitive test information. Current terms, rates and quotas: https://ai.google.dev/gemini-api/docs/pricing and https://ai.google.dev/gemini-api/docs/rate-limits . No live free-tier access or billing status has been verified for your account.
+
+## Change provider/model
+`cloud.json` controls execution. `defaults` applies to all roles; `roles` merges overrides for specific roles. A Gemini example is saved in `examples/cloud-gemini.json`; an OpenAI-compatible example is in `examples/cloud-openai.json`. Copy the desired example to cloud.json and edit it. Nothing installs or runs a local model.
 
 ```json
-{"finance": {"model": "your-finance-model-id", "base_url": "https://your-provider.example/v1", "api_key_env": "FINANCE_API_KEY"}}
+{"ceo": {"model": "another-gemini-model-id"}}
 ```
 
-`roles` keys match agents/registry.json. LLM_BASE_URL overrides an empty base_url; to use a different provider, set base_url explicitly in cloud.json (or make it empty and use the environment variable). A provider must support HTTPS OpenAI-compatible `/chat/completions`, bearer authentication, `max_completion_tokens`, string message content and `finish_reason: stop`. Native Anthropic/Gemini APIs need an adapter or compatible gateway; arbitrary APIs are not interchangeable. Select providers and models that accept this contract. Registry provider/model fields remain descriptive placeholders; cloud.json controls runtime selection.
+Place that object under `roles` to change only the CEO. To switch a role to OpenAI or another compatible API, override **all four** provider fields together:
+
+```json
+{"finance": {"provider": "openai_compatible", "base_url": "https://api.openai.com/v1", "model": "your-model-id", "api_key_env": "OPENAI_API_KEY"}}
+```
+
+Set that provider's key in its named environment variable. OpenAI API billing is separate from ChatGPT subscriptions. Existing configs without `provider` continue to use the OpenAI-compatible adapter. That adapter expects `/chat/completions`, bearer authentication, `max_completion_tokens` and string text responses. Gemini uses the native `/models/MODEL:generateContent` API with `x-goog-api-key`. Native Anthropic APIs still require a separate adapter or compatible gateway.
+
+Model/base URL values in cloud.json take precedence. If either is empty, the runner reads LLM_MODEL / LLM_BASE_URL respectively. Registry model/provider fields are descriptive placeholders, not runtime configuration. Exported config and prompts remain vendor independent; reconnect the selected provider's secret on migration.
 
 Set provider-side spend limits and review rates before first use. max_output_tokens limits requested output, not dollars or total input tokens. Long context/history can increase charges. Failed requests can still be billed. There are no automatic retries, loops or scheduled calls. Configuration is owner-controlled. Ensure you are comfortable sending the role context, company config, task list and checkpoint to that provider; do not put secrets/customer data in these records.
 

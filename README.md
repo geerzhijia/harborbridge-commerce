@@ -23,3 +23,5 @@ Read docs/operating-playbook.md for the workflow, docs/migration.md to move plat
 Do not store passwords, identity documents, bank information or raw customer data here. Put secrets in the destination platform's secret manager. Operational records are retained in state/ and reports/; keep private backups and a lawful retention/deletion policy. Git history is not a substitute for a backup.
 
 Cloud execution: follow docs/cloud-setup.md, approve a task, then run `python3 tools/cloud.py TASK_ID`. Each invocation makes one hosted LLM request and saves a draft for owner review.
+
+Current cloud default: Gemini native API, `gemini-3.5-flash-lite`, using `GEMINI_API_KEY`. See docs/cloud-setup.md for free-tier setup, provider overrides and `python3 tools/cloud.py --check-config ceo`. Project billing tier must be checked in Google AI Studio.

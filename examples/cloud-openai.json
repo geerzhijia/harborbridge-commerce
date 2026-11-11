@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "defaults": {
+    "provider": "openai_compatible",
+    "base_url": "https://api.openai.com/v1",
+    "model": "",
+    "api_key_env": "LLM_API_KEY",
+    "max_output_tokens": 2000,
+    "timeout_seconds": 120
+  },
+  "roles": {}
+}
